@@ -15,6 +15,7 @@ protected:
 private:
     const int MAX_CONFIRM_CNT = 4;
     void checkReliebility(long address, int read_result);
+    void checkErased(long address);
 };
 
 

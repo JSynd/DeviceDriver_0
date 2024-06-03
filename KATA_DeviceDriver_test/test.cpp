@@ -94,3 +94,10 @@ TEST_F(DriverTestFixture, writeCmd_write_exception_in_written_cell) {
 
 	EXPECT_THROW(driver.write(0x0, 'A'), WriteFailException);
 }
+
+TEST_F(DriverTestFixture, full_read) {
+	
+}
+
+TEST_F(DriverTestFixture, write_read_verify) {
+}
