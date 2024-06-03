@@ -22,3 +22,15 @@ TEST(DeviceDriverTest, readCmd_read_5_times_per_cmd) {
 
 	driver.read(0x0);
 }
+
+TEST(DeviceDriverTest, readCmd_return_result_only_same) {
+	MockDevice device;
+	DeviceDriver driver{ &device };
+
+	EXPECT_CALL(device, read(_))
+		.Times(5)
+		.WillRepeatedly(Return(0));
+
+	EXPECT_EQ(driver.read(0x0), 0x0);
+}
+
