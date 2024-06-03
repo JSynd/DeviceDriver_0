@@ -75,3 +75,12 @@ TEST_F(DriverTestFixture, readCmd_return_exception_when_read_result_not_equal) {
 	EXPECT_THROW(driver.read(0x0), ReadFailException);
 }
 
+TEST_F(DriverTestFixture, writeCmd_write_in_erased_cell) {
+	EXPECT_CALL(device, read(_))
+		.Times(1)
+		.WillRepeatedly(Return(device.ERASED));
+	EXPECT_CALL(device, write(_, _))
+		.Times(1);
+
+	EXPECT_NO_THROW(driver.write(0x0, 'A'));
+}
