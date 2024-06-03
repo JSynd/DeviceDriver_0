@@ -10,4 +10,7 @@ public:
 
 protected:
     FlashMemoryDevice *m_hardware;
+
+private:
+    const int READ_RETRY_CNT = 5;
 };

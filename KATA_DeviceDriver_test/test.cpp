@@ -13,14 +13,12 @@ public:
 	MOCK_METHOD(void, write, (long address, unsigned char data), (override));
 };
 
-TEST(DeviceDriverTest, test_read_5_times_per_read_cmd) {
+TEST(DeviceDriverTest, readCmd_read_5_times_per_cmd) {
 	MockDevice device;
 	DeviceDriver driver{ &device };
 
 	EXPECT_CALL(device, read(_))
-		.Times(5)
-		.WillRepeatedly(Return(0));
+		.Times(5);
 
 	driver.read(0x0);
 }
-
