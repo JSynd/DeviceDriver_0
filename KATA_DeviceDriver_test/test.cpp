@@ -13,20 +13,19 @@ public:
 	MOCK_METHOD(void, write, (long address, unsigned char data), (override));
 };
 
-TEST(DeviceDriverTest, readCmd_read_5_times_per_cmd) {
+class DriverTestFixture : public testing::Test {
+public:
 	MockDevice device;
 	DeviceDriver driver{ &device };
+};
 
+TEST_F(DriverTestFixture, readCmd_read_5_times_per_cmd) {
 	EXPECT_CALL(device, read(_))
 		.Times(5);
-
 	driver.read(0x0);
 }
 
-TEST(DeviceDriverTest, readCmd_return_result_only_same) {
-	MockDevice device;
-	DeviceDriver driver{ &device };
-
+TEST_F(DriverTestFixture, readCmd_return_result_only_same) {
 	EXPECT_CALL(device, read(_))
 		.Times(5)
 		.WillRepeatedly(Return(0));
