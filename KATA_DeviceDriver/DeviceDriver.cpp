@@ -1,6 +1,5 @@
 #include "DeviceDriver.h"
 #include <Windows.h>
-#include <stdexcept>
 
 DeviceDriver::DeviceDriver(FlashMemoryDevice *hardware) : m_hardware(hardware)
 {}
@@ -9,9 +8,10 @@ int DeviceDriver::read(long address)
 {
     // TODO: implement this method properly
     int read_result = (int)(m_hardware->read(address));;
-    for (int try_cnt = 0; try_cnt < READ_RETRY_CNT - 1; try_cnt++) {
+    for (int confirm_cnt = 0; confirm_cnt < MAX_CONFIRM_CNT; confirm_cnt++) {
         Sleep(200);
-        if (read_result != (int)(m_hardware->read(address))) throw std::runtime_error("not same result!");
+        if ((int)(m_hardware->read(address)) != read_result)
+            throw ReadFailException("Read reault has changed!");
     }
     return read_result;
 }

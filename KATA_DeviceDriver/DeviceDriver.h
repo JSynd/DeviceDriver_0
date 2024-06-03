@@ -1,5 +1,6 @@
 #pragma once
 #include "FlashMemoryDevice.h"
+#include <stdexcept>
 
 class DeviceDriver
 {
@@ -12,5 +13,15 @@ protected:
     FlashMemoryDevice *m_hardware;
 
 private:
-    const int READ_RETRY_CNT = 5;
+    const int MAX_CONFIRM_CNT = 4;
+};
+
+
+class ReadFailException : public std::exception {
+public:
+    explicit ReadFailException(char const* _Message) : exception(_Message) {
+    }
+    char const* what() const override {
+        return "Read Fail!";
+    }
 };
