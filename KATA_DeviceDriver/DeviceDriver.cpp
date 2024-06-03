@@ -34,3 +34,33 @@ void DeviceDriver::checkErased(long address)
     int ret = m_hardware->read(address);
     if (ret != m_hardware->ERASED) throw WriteFailException("Not Erased!");
 }
+
+void DeviceDriver::sequentialFullRead()
+{
+    long address = m_hardware->getStartAddress();
+    long endAddress = m_hardware->getEndAddress();
+    for (; address < endAddress; address++) {
+        read(address);
+    }
+}
+
+void DeviceDriver::writeRange(long startAddr, long endAddr, int data)
+{
+    writeRangeWithoutVerify(startAddr, endAddr, data);
+    verifyRaange(startAddr, endAddr, data);
+}
+
+void DeviceDriver::writeRangeWithoutVerify(long startAddr, long endAddr, int data)
+{
+    for (long address = startAddr; address <= endAddr; address++) {
+        write(address, data);
+    }
+}
+
+void DeviceDriver::verifyRaange(long startAddr, long endAddr, int data)
+{
+    for (long address = startAddr; address <= endAddr; address++) {
+        int ret = read(address);
+        if (ret != data) throw VerificateionFailException("data mismatch");
+    }
+}

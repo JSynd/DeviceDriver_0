@@ -9,6 +9,13 @@ public:
     int read(long address);
     void write(long address, int data);
 
+    void sequentialFullRead();
+    void writeRange(long startAddr, long endAddr, int data);
+
+    void verifyRaange(long startAddr, long endAddr, int data);
+
+    void writeRangeWithoutVerify(long startAddr, long endAddr, int data);
+
 protected:
     FlashMemoryDevice *m_hardware;
 
@@ -35,5 +42,15 @@ public:
     }
     char const* what() const override {
         return "Write Fail!";
+    }
+};
+
+
+class VerificateionFailException : public std::exception {
+public:
+    explicit VerificateionFailException(char const* _Message) : exception(_Message) {
+    }
+    char const* what() const override {
+        return "Data mismatch!";
     }
 };
