@@ -8,6 +8,7 @@
 class FlashMemoryDevice
 {
 public:
+    virtual int getDelayForReadCmdInMs() = 0;   // 200ms
     virtual unsigned char read(long address) = 0;
     virtual void write(long address, unsigned char data) = 0;
 };

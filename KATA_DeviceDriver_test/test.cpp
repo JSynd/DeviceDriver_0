@@ -9,6 +9,7 @@ using namespace std;
 
 class MockDevice : public FlashMemoryDevice {
 public:
+	MOCK_METHOD(int, getDelayForReadCmdInMs, (), (override));
 	MOCK_METHOD(unsigned char, read, (long address), (override));
 	MOCK_METHOD(void, write, (long address, unsigned char data), (override));
 };
@@ -17,6 +18,11 @@ class DriverTestFixture : public testing::Test {
 public:
 	MockDevice device;
 	DeviceDriver driver{ &device };
+
+	DriverTestFixture() {
+		EXPECT_CALL(device, getDelayForReadCmdInMs())
+			.WillRepeatedly(Return(1));
+	}
 };
 
 TEST_F(DriverTestFixture, readCmd_read_5_times_per_cmd) {

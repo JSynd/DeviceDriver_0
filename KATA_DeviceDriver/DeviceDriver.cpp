@@ -8,8 +8,9 @@ int DeviceDriver::read(long address)
 {
     // TODO: implement this method properly
     int read_result = (int)(m_hardware->read(address));;
+    int delay = m_hardware->getDelayForReadCmdInMs();
     for (int confirm_cnt = 0; confirm_cnt < MAX_CONFIRM_CNT; confirm_cnt++) {
-        Sleep(200);
+        Sleep(delay);
         if ((int)(m_hardware->read(address)) != read_result)
             throw ReadFailException("Read reault has changed!");
     }
