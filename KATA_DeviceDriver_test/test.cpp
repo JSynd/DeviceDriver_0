@@ -33,3 +33,39 @@ TEST_F(DriverTestFixture, readCmd_return_result_only_same) {
 	EXPECT_EQ(driver.read(0x0), 0x0);
 }
 
+TEST_F(DriverTestFixture, readCmd_return_exception_when_read_result_not_equal) {
+	EXPECT_CALL(device, read(_))
+		.Times(5)
+		.WillOnce(Return(1))
+		.WillOnce(Return(1))
+		.WillOnce(Return(1))
+		.WillOnce(Return(1))
+		.WillRepeatedly(Return(0));
+
+	EXPECT_THROW(driver.read(0x0), std::runtime_error);
+
+	EXPECT_CALL(device, read(_))
+		.Times(4)
+		.WillOnce(Return(1))
+		.WillOnce(Return(1))
+		.WillOnce(Return(1))
+		.WillRepeatedly(Return(0));
+
+	EXPECT_THROW(driver.read(0x0), std::runtime_error);
+
+	EXPECT_CALL(device, read(_))
+		.Times(3)
+		.WillOnce(Return(1))
+		.WillOnce(Return(1))
+		.WillRepeatedly(Return(0));
+
+	EXPECT_THROW(driver.read(0x0), std::runtime_error);
+
+	EXPECT_CALL(device, read(_))
+		.Times(2)
+		.WillOnce(Return(1))
+		.WillRepeatedly(Return(0));
+
+	EXPECT_THROW(driver.read(0x0), std::runtime_error);
+}
+
