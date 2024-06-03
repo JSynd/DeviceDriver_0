@@ -26,3 +26,13 @@ public:
         return "Read Fail!";
     }
 };
+
+
+class WriteFailException : public std::exception {
+public:
+    explicit WriteFailException(char const* _Message) : exception(_Message) {
+    }
+    char const* what() const override {
+        return "Write Fail!";
+    }
+};

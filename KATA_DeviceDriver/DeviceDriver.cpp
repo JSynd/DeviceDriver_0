@@ -25,6 +25,7 @@ void DeviceDriver::checkReliebility(long address, int read_result)
 void DeviceDriver::write(long address, int data)
 {
     // TODO: implement this method
-    m_hardware->read(address);
+    int ret = m_hardware->read(address);
+    if (ret == 'A') throw WriteFailException("Not Erased!");
     m_hardware->write(address, (unsigned char)data);
 }

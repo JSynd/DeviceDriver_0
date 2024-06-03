@@ -84,3 +84,13 @@ TEST_F(DriverTestFixture, writeCmd_write_in_erased_cell) {
 
 	EXPECT_NO_THROW(driver.write(0x0, 'A'));
 }
+
+TEST_F(DriverTestFixture, writeCmd_write_exception_in_written_cell) {
+	EXPECT_CALL(device, read(_))
+		.Times(1)
+		.WillRepeatedly(Return('A'));
+	EXPECT_CALL(device, write(_, _))
+		.Times(0);
+
+	EXPECT_THROW(driver.write(0x0, 'A'), WriteFailException);
+}
